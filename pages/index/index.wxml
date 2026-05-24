@@ -1,0 +1,197 @@
+<!-- 房贷计算器 - 主页面 -->
+<view class="page">
+  <!-- 贷款类型选择 -->
+  <view class="card">
+    <view class="segment">
+      <view class="segment-item {{loanType === 'commercial' ? 'active' : ''}}"
+            bindtap="switchLoanType" data-type="commercial">商业贷款</view>
+      <view class="segment-item {{loanType === 'fund' ? 'active' : ''}}"
+            bindtap="switchLoanType" data-type="fund">公积金贷款</view>
+      <view class="segment-item {{loanType === 'combined' ? 'active' : ''}}"
+            bindtap="switchLoanType" data-type="combined">组合贷款</view>
+    </view>
+
+    <!-- 还款方式 -->
+    <view class="segment">
+      <view class="segment-item {{repayType === 'equal-payment' ? 'active' : ''}}"
+            bindtap="switchRepayType" data-type="equal-payment">等额本息</view>
+      <view class="segment-item {{repayType === 'equal-principal' ? 'active' : ''}}"
+            bindtap="switchRepayType" data-type="equal-principal">等额本金</view>
+    </view>
+  </view>
+
+  <!-- 贷款参数输入 -->
+  <view class="card">
+    <!-- 房屋总价 -->
+    <view class="input-group">
+      <view class="input-label">房屋总价<text class="unit">（万元）</text></view>
+      <view class="input-wrapper {{housePriceFocus ? 'focus' : ''}}">
+        <input type="digit" value="{{housePrice}}" 
+               bindinput="onHousePriceInput" bindfocus="onFocus" bindblur="onBlur"
+               data-field="housePrice" placeholder="请输入房屋总价" />
+        <text class="input-suffix">万元</text>
+      </view>
+    </view>
+
+    <!-- 首付比例 -->
+    <view class="input-group">
+      <view class="input-label">首付比例<text class="unit">（%）</text></view>
+      <view class="segment" style="margin-bottom:0;padding:2rpx;">
+        <view class="segment-item {{downPaymentRatio == 15 ? 'active' : ''}}" 
+              bindtap="setDownPayment" data-ratio="{{15}}">15%</view>
+        <view class="segment-item {{downPaymentRatio == 20 ? 'active' : ''}}" 
+              bindtap="setDownPayment" data-ratio="{{20}}">20%</view>
+        <view class="segment-item {{downPaymentRatio == 25 ? 'active' : ''}}" 
+              bindtap="setDownPayment" data-ratio="{{25}}">25%</view>
+        <view class="segment-item {{downPaymentRatio == 30 ? 'active' : ''}}" 
+              bindtap="setDownPayment" data-ratio="{{30}}">30%</view>
+        <view class="segment-item {{downPaymentRatio == 35 ? 'active' : ''}}" 
+              bindtap="setDownPayment" data-ratio="{{35}}">35%</view>
+      </view>
+    </view>
+
+    <!-- 贷款金额（自动计算） -->
+    <view class="input-group">
+      <view class="input-label">贷款金额<text class="unit">（万元）</text></view>
+      <view class="input-wrapper">
+        <input type="digit" value="{{loanAmount}}" disabled="true" />
+        <text class="input-suffix">万元</text>
+      </view>
+    </view>
+
+    <!-- 首付金额显示 -->
+    <view class="input-group">
+      <view class="input-label">首付金额</view>
+      <view class="input-wrapper" style="justify-content:space-between;">
+        <text style="color:#1a73e8;font-weight:600;">{{downPaymentDisplay}} 万</text>
+        <text style="color:#999;font-size:24rpx;">贷款{{loanAmount}}万</text>
+      </view>
+    </view>
+
+    <!-- 贷款年限 -->
+    <view class="input-group">
+      <view class="input-label">贷款年限<text class="unit">（年）</text></view>
+      <view class="segment" style="margin-bottom:0;padding:2rpx;">
+        <view class="segment-item {{loanYear == 10 ? 'active' : ''}}" bindtap="setLoanYear" data-year="{{10}}">10年</view>
+        <view class="segment-item {{loanYear == 20 ? 'active' : ''}}" bindtap="setLoanYear" data-year="{{20}}">20年</view>
+        <view class="segment-item {{loanYear == 30 ? 'active' : ''}}" bindtap="setLoanYear" data-year="{{30}}">30年</view>
+      </view>
+    </view>
+
+    <!-- 贷款利率 -->
+    <view class="input-group">
+      <view class="input-label">贷款利率<text class="unit">（年利率 %）</text></view>
+      <view class="input-wrapper {{loanRateFocus ? 'focus' : ''}}">
+        <input type="digit" value="{{loanRate}}" 
+               bindinput="onLoanRateInput" bindfocus="onFocus" bindblur="onBlur"
+               data-field="loanRate" placeholder="请输入年利率" />
+        <text class="input-suffix">%</text>
+      </view>
+    </view>
+
+    <!-- 公积金贷款参数（仅组合贷款） -->
+    <block wx:if="{{loanType === 'combined'}}">
+      <view class="input-group">
+        <view class="input-label">公积金贷款金额<text class="unit">（万元）</text></view>
+        <view class="input-wrapper {{fundAmountFocus ? 'focus' : ''}}">
+          <input type="digit" value="{{fundAmount}}" 
+                 bindinput="onFundAmountInput" bindfocus="onFocus" bindblur="onBlur"
+                 data-field="fundAmount" placeholder="公积金贷款金额" />
+          <text class="input-suffix">万元</text>
+        </view>
+      </view>
+
+      <view class="input-group">
+        <view class="input-label">公积金利率<text class="unit">（年利率 %）</text></view>
+        <view class="input-wrapper">
+          <input type="digit" value="{{fundRate}}" 
+                 bindinput="onFundRateInput" placeholder="公积金年利率" />
+          <text class="input-suffix">%</text>
+        </view>
+      </view>
+    </block>
+
+    <!-- 计算结果按钮 -->
+    <view class="btn-primary" bindtap="calculate">开始计算</view>
+  </view>
+
+  <!-- 计算结果 -->
+  <view class="card" wx:if="{{result}}">
+    <view style="text-align:center;margin-bottom:20rpx;">
+      <view class="result-label">每月还款</view>
+      <view class="result-highlight">¥{{result.monthlyDisplay}}</view>
+      <view wx:if="{{result.firstPayment}}" style="font-size:24rpx;color:#999;">
+        首月 ¥{{result.firstPaymentDisplay}}，每月递减 ¥{{result.monthlyDecreaseDisplay}}
+      </view>
+    </view>
+
+    <!-- 关键数据 -->
+    <view class="data-grid">
+      <view class="data-item">
+        <view class="value">{{result.loanAmountDisplay}}万</view>
+        <view class="label">贷款总额</view>
+      </view>
+      <view class="data-item">
+        <view class="value">{{result.totalPaymentDisplay}}万</view>
+        <view class="label">还款总额</view>
+      </view>
+      <view class="data-item">
+        <view class="value">{{result.totalInterestDisplay}}万</view>
+        <view class="label">利息总额</view>
+      </view>
+      <view class="data-item">
+        <view class="value">{{result.months}}期</view>
+        <view class="label">还款期数</view>
+      </view>
+    </view>
+
+    <!-- 组合贷款明细 -->
+    <view wx:if="{{loanType === 'combined' && result.commercial}}" style="margin-top:24rpx;">
+      <view style="display:flex;justify-content:space-between;align-items:center;padding:16rpx 0;border-top:1rpx solid #eee;">
+        <text style="color:#666;">商业贷款</text>
+        <text style="color:#1a73e8;font-weight:500;">月供 ¥{{result.commercial.monthlyDisplay}}</text>
+      </view>
+      <view style="display:flex;justify-content:space-between;align-items:center;padding:16rpx 0;border-top:1rpx solid #eee;">
+        <text style="color:#666;">公积金贷款</text>
+        <text style="color:#2ed573;font-weight:500;">月供 ¥{{result.fund.monthlyDisplay}}</text>
+      </view>
+    </view>
+
+    <!-- 查看还款计划 -->
+    <view class="btn-secondary" bindtap="viewSchedule" style="margin-top:24rpx;">查看详细还款计划 →</view>
+  </view>
+
+  <!-- 等额本息 vs 等额本金对比 -->
+  <view class="card" wx:if="{{showCompare && compareResult}}">
+    <view style="font-size:30rpx;font-weight:600;margin-bottom:20rpx;">两种还款方式对比</view>
+    
+    <view style="display:flex;justify-content:space-between;margin-bottom:16rpx;">
+      <view style="flex:1;text-align:center;">
+        <view style="font-size:24rpx;color:#999;">等额本息</view>
+        <view style="font-size:36rpx;font-weight:700;color:#1a73e8;">¥{{compareResult.equalPaymentDisplay}}</view>
+        <view style="font-size:22rpx;color:#999;">每月固定</view>
+      </view>
+      <view style="width:2rpx;background:#eee;"></view>
+      <view style="flex:1;text-align:center;">
+        <view style="font-size:24rpx;color:#999;">等额本金</view>
+        <view style="font-size:36rpx;font-weight:700;color:#ff6b6b;">¥{{compareResult.equalPrincipalDisplay}}</view>
+        <view style="font-size:22rpx;color:#999;">首月最高</view>
+      </view>
+    </view>
+
+    <view class="data-grid">
+      <view class="data-item">
+        <view class="value">¥{{compareResult.equalPaymentTotalInterestDisplay}}万</view>
+        <view class="label">等额本息总利息</view>
+      </view>
+      <view class="data-item">
+        <view class="value">¥{{compareResult.equalPrincipalTotalInterestDisplay}}万</view>
+        <view class="label">等额本金总利息</view>
+      </view>
+    </view>
+
+    <view style="text-align:center;margin-top:16rpx;padding:12rpx;background:#f0fdf0;border-radius:8rpx;color:#2ed573;font-size:26rpx;">
+      等额本金可节省利息 ¥{{compareResult.savedInterestDisplay}}万
+    </view>
+  </view>
+</view>

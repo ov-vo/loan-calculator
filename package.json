@@ -1,0 +1,12 @@
+{
+  "name": "loan-calculator",
+  "version": "1.0.0",
+  "description": "房贷计算器 - WeChat Mini Program",
+  "private": true,
+  "scripts": {
+    "upload": "node ci/upload.js"
+  },
+  "devDependencies": {
+    "miniprogram-ci": "^1.9.0"
+  }
+}

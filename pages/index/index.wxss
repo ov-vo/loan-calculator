@@ -1,0 +1,4 @@
+/* 房贷计算器主页样式 */
+.page {
+  padding-bottom: 40rpx;
+}

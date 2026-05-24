@@ -1,0 +1,101 @@
+/* 还款计划表样式 */
+.page {
+  padding-bottom: 40rpx;
+}
+
+/* 堆叠柱状图 */
+.stacked-chart {
+  margin-bottom: 8rpx;
+}
+
+.chart-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.chart-label {
+  width: 100rpx;
+  font-size: 20rpx;
+  color: #999;
+  text-align: right;
+  padding-right: 12rpx;
+}
+
+.chart-bar {
+  flex: 1;
+  height: 28rpx;
+  display: flex;
+  border-radius: 4rpx;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.chart-bar-interest {
+  background: linear-gradient(to right, #ff6b6b, #ff8e8e);
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+.chart-bar-principal {
+  background: linear-gradient(to right, #4ecb71, #6fe08a);
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+.chart-val {
+  width: 120rpx;
+  font-size: 20rpx;
+  color: #666;
+  text-align: right;
+  padding-left: 8rpx;
+}
+
+/* 年份筛选 */
+.year-filter {
+  white-space: nowrap;
+  padding: 16rpx 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.year-tag {
+  display: inline-block;
+  padding: 8rpx 20rpx;
+  margin-right: 12rpx;
+  background: #f5f6f8;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.year-tag.active {
+  background: #1a73e8;
+  color: #fff;
+}
+
+/* 表格 */
+.table-header {
+  display: flex;
+  padding: 16rpx 20rpx;
+  background: #f8f9fb;
+  font-size: 22rpx;
+  color: #999;
+  font-weight: 500;
+}
+
+.table-row {
+  display: flex;
+  padding: 14rpx 20rpx;
+  font-size: 22rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.table-row.even {
+  background: #fafbfc;
+}
+
+.col-period { width: 80rpx; text-align: center; }
+.col-payment { flex: 1; text-align: right; color: #333; }
+.col-principal { flex: 1; text-align: right; color: #4ecb71; }
+.col-interest { flex: 1; text-align: right; color: #ff6b6b; }
+.col-remain { flex: 1; text-align: right; color: #999; }

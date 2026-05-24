@@ -1,0 +1,113 @@
+<!-- 购房税费计算 -->
+<view class="page">
+  <view class="card">
+    <view class="input-group">
+      <view class="input-label">房屋总价<text class="unit">（万元）</text></view>
+      <view class="input-wrapper {{housePriceFocus ? 'focus' : ''}}">
+        <input type="digit" value="{{housePrice}}" bindinput="onInput" bindfocus="onFocus" bindblur="onBlur"
+               data-field="housePrice" placeholder="请输入房屋总价" />
+        <text class="input-suffix">万元</text>
+      </view>
+    </view>
+
+    <view class="input-group">
+      <view class="input-label">房屋面积<text class="unit">（平米）</text></view>
+      <view class="input-wrapper {{areaFocus ? 'focus' : ''}}">
+        <input type="digit" value="{{area}}" bindinput="onInput" bindfocus="onFocus" bindblur="onBlur"
+               data-field="area" placeholder="请输入房屋面积" />
+        <text class="input-suffix">㎡</text>
+      </view>
+    </view>
+
+    <!-- 购房套数 -->
+    <view class="input-group">
+      <view class="input-label">购房套数</view>
+      <view class="segment" style="margin-bottom:0;padding:2rpx;">
+        <view class="segment-item {{buyerType === 'first' ? 'active' : ''}}" bindtap="setBuyerType" data-type="first">首套</view>
+        <view class="segment-item {{buyerType === 'second' ? 'active' : ''}}" bindtap="setBuyerType" data-type="second">二套</view>
+        <view class="segment-item {{buyerType === 'third' ? 'active' : ''}}" bindtap="setBuyerType" data-type="third">三套+</view>
+      </view>
+    </view>
+
+    <!-- 住宅类型 -->
+    <view class="input-group">
+      <view class="input-label">住宅类型</view>
+      <view class="segment" style="margin-bottom:0;padding:2rpx;">
+        <view class="segment-item {{houseType === 'normal' ? 'active' : ''}}" bindtap="setHouseType" data-type="normal">普通住宅</view>
+        <view class="segment-item {{houseType === 'non-normal' ? 'active' : ''}}" bindtap="setHouseType" data-type="non-normal">非普通住宅</view>
+      </view>
+    </view>
+
+    <!-- 房屋年限 -->
+    <view class="input-group">
+      <view class="input-label">房屋年限</view>
+      <view class="segment" style="margin-bottom:0;padding:2rpx;">
+        <view class="segment-item {{houseAge == 0 ? 'active' : ''}}" bindtap="setHouseAge" data-age="{{0}}">不满2年</view>
+        <view class="segment-item {{houseAge == 2 ? 'active' : ''}}" bindtap="setHouseAge" data-age="{{2}}">满2年</view>
+        <view class="segment-item {{houseAge == 5 ? 'active' : ''}}" bindtap="setHouseAge" data-age="{{5}}">满5年</view>
+      </view>
+    </view>
+
+    <!-- 是否唯一 -->
+    <view class="input-group" wx:if="{{houseAge >= 5}}">
+      <view class="input-label">是否卖方唯一住房</view>
+      <view class="segment" style="margin-bottom:0;padding:2rpx;">
+        <view class="segment-item {{isUnique ? 'active' : ''}}" bindtap="setUnique" data-unique="{{true}}">唯一</view>
+        <view class="segment-item {{!isUnique ? 'active' : ''}}" bindtap="setUnique" data-unique="{{false}}">非唯一</view>
+      </view>
+    </view>
+
+    <!-- 房屋原值（选填） -->
+    <view class="input-group">
+      <view class="input-label">房屋原值<text class="unit">（万元，选填）</text></view>
+      <view class="input-wrapper {{originalPriceFocus ? 'focus' : ''}}">
+        <input type="digit" value="{{originalPrice}}" bindinput="onInput" bindfocus="onFocus" bindblur="onBlur"
+               data-field="originalPrice" placeholder="卖家当初购入价格" />
+        <text class="input-suffix">万元</text>
+      </view>
+    </view>
+
+    <view class="btn-primary" bindtap="calculate">计算税费</view>
+  </view>
+
+  <!-- 税费结果 -->
+  <view class="card" wx:if="{{result}}">
+    <view style="text-align:center;margin-bottom:20rpx;">
+      <view class="result-label">税费总计</view>
+      <view class="result-highlight" style="color:#ff4757;">¥{{result.totalTaxDisplay}}万</view>
+    </view>
+
+    <!-- 买方 / 卖方 -->
+    <view class="data-grid">
+      <view class="data-item">
+        <view class="value" style="color:#1a73e8;">¥{{result.buyerTotalDisplay}}万</view>
+        <view class="label">买方承担</view>
+      </view>
+      <view class="data-item">
+        <view class="value" style="color:#ffa502;">¥{{result.sellerTotalDisplay}}万</view>
+        <view class="label">卖方承担</view>
+      </view>
+    </view>
+
+    <!-- 明细 -->
+    <view style="margin-top:24rpx;">
+      <view style="font-size:28rpx;font-weight:600;margin-bottom:12rpx;">费用明细</view>
+      <block wx:for="{{result.breakdown}}" wx:key="name">
+        <view style="display:flex;justify-content:space-between;padding:16rpx 0;border-top:1rpx solid #f5f5f5;">
+          <view>
+            <text style="font-size:26rpx;">{{item.name}}</text>
+            <text style="font-size:20rpx;color:#999;margin-left:12rpx;">{{item.bearer}}</text>
+          </view>
+          <text style="font-weight:500;" class="{{item.amount > 0 ? 'color-danger' : 'color-muted'}}">
+            ¥{{item.displayAmount}}万
+          </text>
+        </view>
+      </block>
+    </view>
+
+    <!-- 提示 -->
+    <view style="margin-top:16rpx;padding:16rpx;background:#f0f7ff;border-radius:8rpx;font-size:22rpx;color:#666;">
+      💡 实际税费因城市政策差异可能有所不同，本计算仅供参考
+    </view>
+  </view>
+</view>

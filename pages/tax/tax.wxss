@@ -1,0 +1,4 @@
+/* 税费页样式 */
+.page {
+  padding-bottom: 40rpx;
+}

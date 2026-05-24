@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/schedule/schedule",
+    "pages/prepay/prepay",
+    "pages/tax/tax"
+  ],
+  "window": {
+    "navigationBarTitleText": "房贷计算器",
+    "navigationBarBackgroundColor": "#1a73e8",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f6f8"
+  },
+  "tabBar": {
+    "color": "#8a8a8a",
+    "selectedColor": "#1a73e8",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "计算",
+        "iconPath": "assets/icon-calc.png",
+        "selectedIconPath": "assets/icon-calc-active.png"
+      },
+      {
+        "pagePath": "pages/schedule/schedule",
+        "text": "还款计划",
+        "iconPath": "assets/icon-schedule.png",
+        "selectedIconPath": "assets/icon-schedule-active.png"
+      },
+      {
+        "pagePath": "pages/prepay/prepay",
+        "text": "提前还款",
+        "iconPath": "assets/icon-prepay.png",
+        "selectedIconPath": "assets/icon-prepay-active.png"
+      },
+      {
+        "pagePath": "pages/tax/tax",
+        "text": "税费",
+        "iconPath": "assets/icon-tax.png",
+        "selectedIconPath": "assets/icon-tax-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

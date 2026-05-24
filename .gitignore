@@ -1,0 +1,4 @@
+node_modules/
+ci/private.key
+*.log
+.DS_Store
