@@ -20,10 +20,7 @@ jobs:
           node-version: '20'
 
       - name: 安装依赖
-        run: |
-          npm install
-          npm ls less 2>&1 || true
-          ls node_modules/less/lib/less/ 2>&1 || npm install less --no-save
+        run: npm install
 
       - name: 上传代码到微信后台
         run: node ci/upload.js

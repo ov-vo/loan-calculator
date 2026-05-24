@@ -8,6 +8,6 @@
   },
   "devDependencies": {
     "miniprogram-ci": "^1.9.0",
-    "less": "^4.2.0"
+    "less": "^3.13.0"
   }
 }
